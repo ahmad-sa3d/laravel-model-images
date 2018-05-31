@@ -1,0 +1,39 @@
+{
+    "name": "saad/laravel-model-images",
+    "description": "This library will make it easy to save and upload model images",
+    "keywords": [
+        "laravel",
+        "images",
+        "intervention",
+        "imageable",
+        "gallery",
+        "profile",
+        "photos",
+        "saad"
+    ],
+    "require": {
+        "saad/image": "^1.0",
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahmed Saad",
+            "email": "a7mad.sa3d.2014@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Saad\\ModelImages\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+            ],
+
+            "aliases": {
+            }
+        }
+    }
+}
