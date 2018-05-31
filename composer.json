@@ -13,7 +13,8 @@
     ],
     "require": {
         "saad/image": "^1.0",
-        "illuminate/http": "^5.7@dev"
+        "illuminate/http": "^5.7@dev",
+        "intervention/image": "^2.4@dev"
     },
     "license": "MIT",
     "authors": [
