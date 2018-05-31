@@ -19,42 +19,42 @@ class ImageSaver {
 
 	/**
 	 * Model
-	 * 
+	 *
 	 * @var Model
 	 */
 	protected $model;
 
 	/**
 	 * Image Field
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $field;
 
 	/**
 	 * Image File
-	 * 
+	 *
 	 * @var UploadedFile|string
 	 */
 	protected $image;
 
 	/**
 	 * Image Extension
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $extension;
 
 	/**
 	 * Is Uploaded Image
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $is_uploaded;
 
 	/**
 	 * Image Provider
-	 * 
+	 *
 	 * @var ImageProviderContract
 	 */
 	protected $image_provider;
@@ -122,27 +122,27 @@ class ImageSaver {
 
 		// Saving Process
 		if (empty($sizes)) {
-            $save_name = $this->image_provider->setSaveOptions($name, $path)
-            				->save();
-        } else {
-            $main_size = array_shift($sizes);
-            $main = $this->getSize($main_size);
-            $save_name = $this->image_provider->createThumbnail($main['w'], $main['h'], true)
-                        ->setSaveOptions($name, $path)
-                        ->save(true);
+			$save_name = $this->image_provider->setSaveOptions($name, $path)
+				->save();
+		} else {
+			$main_size = array_shift($sizes);
+			$main = $this->getSize($main_size);
+			$save_name = $this->image_provider->createThumbnail($main['w'], $main['h'], true)
+				->setSaveOptions($name, $path)
+				->save(true);
 
-            foreach ($sizes as $size) {
-                $size = $this->getSize($size);
-                $this->image_provider->createThumbnail($size['w'], $size['h'], true)
-                	->setSaveOptions(join('x', $size) . '_' . $save_name, $path . 'thumb')
-                	->save(true);
-            }
+			foreach ($sizes as $size) {
+				$size = $this->getSize($size);
+				$this->image_provider->createThumbnail($size['w'], $size['h'], true)
+					->setSaveOptions(join('x', $size) . '_' . $save_name, $path . 'thumb' . DIRECTORY_SEPARATOR)
+					->save(true);
+			}
 
-	        // Destroy Resource
-	        $this->image_provider->destroy();
-        }
+			// Destroy Resource
+			$this->image_provider->destroy();
+		}
 
-        return $save_name;
+		return $save_name;
 	}
 
 	/**
@@ -151,35 +151,35 @@ class ImageSaver {
 	 * @param null $path
 	 * @return int
 	 */
-    public function removeImage($path = null) {
-    	$old_image = $this->model->{$this->field};
-    	$path = $path ?? public_path($this->model->getSavePath($this->field));
+	public function removeImage($path = null) {
+		$old_image = $this->model->{$this->field};
+		$path = $path ?? public_path($this->model->getSavePath($this->field));
 
-    	$deleted_count = 0;
+		$deleted_count = 0;
 
 		if ($old_image) {
-            if (file_exists($path . $old_image)) {
-                unlink($path . $old_image);
-                $deleted_count++;
-            }
+			if (file_exists($path . $old_image)) {
+				unlink($path . $old_image);
+				$deleted_count++;
+			}
 
-            $thumb_dir = $path . 'thumb' . DIRECTORY_SEPARATOR;
-            
-            if (is_dir($thumb_dir)) {
-                // get cwd first, then change cwd
-                $cwd = getcwd();
-                chdir($thumb_dir);
-                foreach (glob('*' . pathinfo($old_image)['filename'] . '*') as $file) {
-                    unlink($thumb_dir . $file);
-	                $deleted_count++;
-                }
-                // go back to original cwd
-                chdir($cwd);
-            }  
-        }
+			$thumb_dir = $path . 'thumb' . DIRECTORY_SEPARATOR;
 
-        return $deleted_count;
-    }
+			if (is_dir($thumb_dir)) {
+				// get cwd first, then change cwd
+				$cwd = getcwd();
+				chdir($thumb_dir);
+				foreach (glob('*' . pathinfo($old_image)['filename'] . '*') as $file) {
+					unlink($thumb_dir . $file);
+					$deleted_count++;
+				}
+				// go back to original cwd
+				chdir($cwd);
+			}
+		}
+
+		return $deleted_count;
+	}
 
 	/**
 	 * Setup Uploaded Image
@@ -214,17 +214,17 @@ class ImageSaver {
 	 * @param $size
 	 * @return array
 	 */
-    private function getSize($size) {
-        $dim = [];
-        if (is_array($size)) {
-            $dim['w'] = $size[0];
-            $dim['h'] = isset($size[1]) ? $size[1] : $size[0];
-        }
-        else
-        {
-            $dim['w'] = $size;
-            $dim['h'] = null;
-        }
-        return $dim;
-    }
+	private function getSize($size) {
+		$dim = [];
+		if (is_array($size)) {
+			$dim['w'] = $size[0];
+			$dim['h'] = isset($size[1]) ? $size[1] : $size[0];
+		}
+		else
+		{
+			$dim['w'] = $size;
+			$dim['h'] = null;
+		}
+		return $dim;
+	}
 }
