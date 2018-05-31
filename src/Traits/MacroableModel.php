@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @package  saad/laravel-model-images
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ */
+
 namespace Saad\ModelImages\Traits;
 
 use Illuminate\Support\Str;

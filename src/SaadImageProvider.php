@@ -1,11 +1,19 @@
 <?php
 
+/**
+ * @package  saad/laravel-model-images
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ */
+
 namespace Saad\ModelImages;
 
 use Saad\ModelImages\Contracts\ImageProviderContract;
 use Saad\Image\Image;
 
 class SaadImageProvider implements ImageProviderContract {
+
 	/**
 	 * Image Instance
 	 * 
@@ -16,8 +24,10 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Create Image Instance
-	 * 
-	 * @return
+	 *
+	 * @param $file_path
+	 * @param null $extension
+	 * @return ImageProviderContract
 	 */
 	public function create($file_path, $extension = null) :ImageProviderContract
 	{
@@ -27,11 +37,11 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Set Output Format Options
-	 * 
-	 * @param string $extension save base extension
-	 * @param int $quality save quality
-	 * @param string $filter output filter
-	 * @return
+	 *
+	 * @param string $extension
+	 * @param int|null $quality
+	 * @param int|null $filter
+	 * @return ImageProviderContract
 	 */
 	public function setOutputFormat(string $extension, int $quality = null, int $filter = null) :ImageProviderContract
 	{
@@ -41,10 +51,10 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Set Save Options
-	 * 
-	 * @param string $name save base name
-	 * @param string $path save directory
-	 * @return
+	 *
+	 * @param string $name
+	 * @param string $path
+	 * @return ImageProviderContract
 	 */
 	public function setSaveOptions(string $name, string $path) :ImageProviderContract
 	{
@@ -54,8 +64,9 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Save Image
-	 * 
-	 * @return
+	 *
+	 * @param bool $keep_instance
+	 * @return string
 	 */
 	public function save($keep_instance = false) :string
 	{
@@ -64,11 +75,11 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Save Image
-	 * 
-	 * @param int $width Thumb width
-	 * @param int $height Thumb height
-	 * @param int $height Thumb height
-	 * @return
+	 *
+	 * @param $width
+	 * @param null $height
+	 * @param bool $preserve_aspect
+	 * @return ImageProviderContract
 	 */
 	public function createThumbnail($width, $height = null, $preserve_aspect = false) :ImageProviderContract
 	{
@@ -78,8 +89,6 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Destroy Image instance
-	 * 
-	 * @return
 	 */
 	public function destroy() {
 		$this->instance->destroy();	

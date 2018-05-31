@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package  saad/laravel-model-images
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ */
 
 namespace Saad\ModelImages;
 
@@ -6,7 +12,6 @@ use Saad\ModelImages\Contracts\ImageProviderContract;
 use Saad\ModelImages\Contracts\ImageableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use BadMethodCallException;
 
@@ -20,7 +25,7 @@ class ImageSaver {
 	protected $model;
 
 	/**
-	 * Image Fild
+	 * Image Field
 	 * 
 	 * @var string
 	 */
@@ -50,16 +55,16 @@ class ImageSaver {
 	/**
 	 * Image Provider
 	 * 
-	 * @var string
+	 * @var ImageProviderContract
 	 */
 	protected $image_provider;
 
+
 	/**
-	 * 
-	 * @param ImageableContract $model [description]
-	 * @param [type]            $field [description]
-	 * @param [type]            $image [description]
-	 * @throws InvalidArgumentException description
+	 * ImageSaver constructor.
+	 * @param ImageableContract $model
+	 * @param $field
+	 * @param null $image
 	 */
 	public function __construct(ImageableContract $model, $field, $image = null) {
 		$this->model = $model;
@@ -73,9 +78,9 @@ class ImageSaver {
 
 		if ($image instanceof UploadedFile) {
 			$this->is_uploaded = true;
-			$this->setupUploadedImage($image);
+			$this->setupUploadedImage();
 		} else if ($this->model->imageExists($image)){
-			$this->setupStorageImage($image);
+			$this->setupStorageImage();
 		} else {
 			throw new InvalidArgumentException(sprintf('%s::%s() image "%s" not exists', static::class, __METHOD__, $image));
 		}
@@ -85,8 +90,8 @@ class ImageSaver {
 
 	/**
 	 * Set Image Provider
-	 * 
-	 * @param ImageProviderContract $provider [description]
+	 *
+	 * @param ImageProviderContract $provider
 	 */
 	public function setImageProvider(ImageProviderContract $provider) {
 		$this->image_provider = $provider;
@@ -94,8 +99,8 @@ class ImageSaver {
 
 	/**
 	 * Save Image
-	 * 
-	 * @return [type] [description]
+	 *
+	 * @return mixed
 	 */
 	public function save() {
 		if (! $this->image) {
@@ -108,7 +113,7 @@ class ImageSaver {
 		$this->image_provider->setOutputFormat(
 			$this->model->imageSaveExtension(),
 			$this->model->imageSaveQuality(),
-			$this->model->imageSaveFilter()
+			$this->model->imagePNGFilter()
 		);
 
 		$name = $this->model->getSaveName($this->field);
@@ -141,11 +146,11 @@ class ImageSaver {
 	}
 
 	/**
-     * Delete Image
-     * 
-     * @param  [type] $field [description]
-     * @return [type]        [description]
-     */
+	 * Delete Image
+	 *
+	 * @param null $path
+	 * @return int
+	 */
     public function removeImage($path = null) {
     	$old_image = $this->model->{$this->field};
     	$path = $path ?? public_path($this->model->getSavePath($this->field));
@@ -178,22 +183,16 @@ class ImageSaver {
 
 	/**
 	 * Setup Uploaded Image
-	 * 
-	 * @param  [type] $image [description]
-	 * @return [type]        [description]
 	 */
-	protected function setupUploadedImage($image) {
+	protected function setupUploadedImage() {
 		$this->extension = $this->image->extension();
 		$this->checkImageSupport();
 	}
 
 	/**
 	 * Setup Storage Image
-	 * 
-	 * @param  [type] $image [description]
-	 * @return [type]        [description]
 	 */
-	protected function setupStorageImage($image) {
+	protected function setupStorageImage() {
 		$arr = explode('.', $this->image);
 		$this->extension = end($arr);
 		$this->checkImageSupport();
@@ -201,9 +200,8 @@ class ImageSaver {
 
 	/**
 	 * Check Uploaded Image Format
-	 * 
-	 * @return [type] [description]
-	 * @throws InvalidArgumentException description
+	 *
+	 * @throws InvalidArgumentException
 	 */
 	protected function checkImageSupport() {
 		if (!in_array($this->extension, $this->model->imageSupportedFormats())) {
@@ -212,8 +210,10 @@ class ImageSaver {
 	}
 
 	/**
-     * Get Width, Height values
-     */
+	 * Get Width, Height values
+	 * @param $size
+	 * @return array
+	 */
     private function getSize($size) {
         $dim = [];
         if (is_array($size)) {

@@ -12,7 +12,8 @@
         "saad"
     ],
     "require": {
-        "saad/image": "^1.0"
+        "saad/image": "^1.0",
+        "illuminate/http": "^5.7@dev"
     },
     "license": "MIT",
     "authors": [
@@ -35,5 +36,8 @@
             "aliases": {
             }
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.6"
     }
 }

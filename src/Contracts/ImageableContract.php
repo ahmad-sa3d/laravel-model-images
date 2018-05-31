@@ -1,13 +1,18 @@
 <?php
 
-namespace Saad\ModelImages\Contracts;
+/**
+ * @package  saad/laravel-model-images
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ */
 
-use Saad\ModelImages\Contracts\ImageProviderContract;
+namespace Saad\ModelImages\Contracts;
 
 interface ImageableContract {
 
 	/**
-	 * Model Imageable fields
+	 * Model Image fields
 	 * 
 	 * @return array
 	 */
@@ -15,28 +20,29 @@ interface ImageableContract {
 
 	/**
 	 * Set setting default image status
-	 * 
-	 * @param  boolean $bool [description]
+	 *
+	 * @param bool $bool
 	 */
 	public static function settingDefaultImage(bool $bool = true);
 
 	/**
 	 * Check if setting default image
-	 * 
-	 * @return  boolean [description]
+	 *
+	 * @return  boolean
 	 */
 	public function isSettingDefaultImage() :bool;
 
 	/**
 	 * Get Image Supported Formats
 	 * 
-	 * @return [type] [description]
+	 * @return array
 	 */
 	public function imageSupportedFormats() :array;
 
 	/**
 	 * Check if  storage image exists
-	 * 
+	 *
+	 * @param $image
 	 * @return bool
 	 */
 	public function imageExists($image) :bool;
@@ -60,40 +66,43 @@ interface ImageableContract {
 	 * 
 	 * @return integer
 	 */
-	public function imageSaveFilter() :int;
+	public function imagePNGFilter() :int;
 
 	/**
 	 * Get Save Name
-	 * 
-	 * @return integer
+	 *
+	 * @param $field
+	 * @return string
 	 */
 	public function getSaveName($field) :string;
 
 	/**
 	 * Get General Save Name
-	 * 
-	 * @return integer
+	 *
+	 * @return string
 	 */
 	public function imageGeneralSaveName() :string;
 
 	/**
 	 * Get General Save Path
-	 * 
-	 * @return integer
+	 *
+	 * @param $field
+	 * @return string
 	 */
 	public function getSavePath($field) :string;
 
 	/**
 	 * Get General Save Path
-	 * 
-	 * @return integer
+	 *
+	 * @return string
 	 */
 	public function imageGeneralSavePath() :string;
 
 	/**
 	 * Get Image Save Sizes
-	 * 
-	 * @return integer
+	 *
+	 * @param $field
+	 * @return array
 	 */
 	public function getSaveSizes($field) :array;
 

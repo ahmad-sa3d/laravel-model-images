@@ -1,15 +1,18 @@
 <?php
 
+/**
+ * @package  saad/laravel-model-images
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ */
+
 namespace Saad\ModelImages\Traits;
 
 use Saad\ModelImages\Contracts\ImageProviderContract;
 use Saad\ModelImages\ImageSaver;
 use Saad\ModelImages\SaadImageProvider;
-use Saad\ModelImages\Traits\MacroableModel;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 
 trait HasImages {
 
@@ -30,7 +33,7 @@ trait HasImages {
 	protected static $is_saving_default_image;
 
 	/**
-	 * Register Mutators Macros (Dynamic Methods)
+	 * Register Mutator Macros (Dynamic Methods)
 	 */
 	protected static function boot() {
 		parent::boot();
@@ -75,8 +78,8 @@ trait HasImages {
 
 	/**
 	 * Set setting default image status
-	 * 
-	 * @param  boolean $bool [description]
+	 *
+	 * @param bool $bool
 	 */
 	public static function settingDefaultImage(bool $bool = true) {
 		static::$is_saving_default_image = $bool;
@@ -85,7 +88,7 @@ trait HasImages {
 	/**
 	 * Check if setting default image
 	 * 
-	 * @return  boolean [description]
+	 * @return  boolean
 	 */
 	public function isSettingDefaultImage() :bool
 	{
@@ -94,8 +97,8 @@ trait HasImages {
 
 	/**
 	 * Get Image Supported Formats
-	 * 
-	 * @return [type] [description]
+	 *
+	 * @return array
 	 */
 	public function imageSupportedFormats() :array
 	{
@@ -106,7 +109,8 @@ trait HasImages {
 
 	/**
 	 * Check if  storage image exists
-	 * 
+	 *
+	 * @param $image
 	 * @return bool
 	 */
 	public function imageExists($image) :bool
@@ -121,7 +125,7 @@ trait HasImages {
 	 */
 	public function imageSaveExtension() :string
 	{
-		return 'png';
+		return 'jpg';
 	}
 
 	/**
@@ -131,7 +135,7 @@ trait HasImages {
 	 */
 	public function imageSaveQuality() :int
 	{
-		return 100;
+		return 70;
 	}
 
 	/**
@@ -139,14 +143,15 @@ trait HasImages {
 	 * 
 	 * @return integer
 	 */
-	public function imageSaveFilter() :int
+	public function imagePNGFilter() :int
 	{
 		return PNG_NO_FILTER;
 	}
 
 	/**
 	 * Get Save Name
-	 * 
+	 *
+	 * @param $field
 	 * @return string
 	 */
 	public function getSaveName($field) :string
@@ -167,8 +172,8 @@ trait HasImages {
 
 	/**
 	 * Get General Save Name
-	 * 
-	 * @return integer
+	 *
+	 * @return string
 	 */
 	public function imageGeneralSaveName() :string
 	{
@@ -177,7 +182,8 @@ trait HasImages {
 
 	/**
 	 * Get Save Path
-	 * 
+	 *
+	 * @param $field
 	 * @return string
 	 */
 	public function getSavePath($field) :string
@@ -194,8 +200,9 @@ trait HasImages {
 
 	/**
 	 * Get Image Save Sizes
-	 * 
-	 * @return integer
+	 *
+	 * @param $field
+	 * @return array
 	 */
 	public function getSaveSizes($field) :array
 	{
@@ -209,17 +216,18 @@ trait HasImages {
 
 	/**
 	 * Get General Save Name
-	 * 
-	 * @return integer
+	 *
+	 * @return string
 	 */
 	public function imageGeneralSavePath() :string
 	{
 		return 'images/upload';
 	}
 
+
 	/**
-	 * Get Image Save Provider
-	 * 
+	 * Get Provider which will manipulate image processing
+	 *
 	 * @return ImageProviderContract
 	 */
 	public function imageSaveProvider() :ImageProviderContract
@@ -229,19 +237,18 @@ trait HasImages {
 
 	/**
 	 * Get Image Public Link
-	 * 
-	 * @param  [type]  $field            [description]
-	 * @param  [type]  $prefix           [description]
-	 * @param  boolean $dynamic_url_size [description]
-	 * @return [type]                    [description]
+	 *
+	 * @param $field
+	 * @param null $prefix
+	 * @return string
 	 */
-	public function getPublicLink($field, $prefix = null, $dynamic_url_size = false)
+	public function getPublicLink($field, $prefix = null)
     {
         $prefix = $prefix ? 'thumb/' . $prefix . '_' : null;
-        $ckey = $prefix . $field;
+        $c_key = $prefix . $field;
 
-        if (isset($this->cached_links[$ckey])) {
-            return $this->cached_links[$ckey];
+        if (isset($this->cached_links[$c_key])) {
+            return $this->cached_links[$c_key];
         }
         $path = $this->getSavePath($field);
         $link = $path . $prefix . $this->{$field};
@@ -249,6 +256,6 @@ trait HasImages {
             $link = $path . $prefix . 'default.' . $this->imageSaveExtension();
         }
 
-        return $this->cached_links[$ckey] = $link;
+        return $this->cached_links[$c_key] = $link;
     }
 }
