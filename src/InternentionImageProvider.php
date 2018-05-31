@@ -16,7 +16,7 @@ class InterventionImageProvider implements ImageProviderContract {
 
 	/**
 	 * Image Instance
-	 * 
+	 *
 	 * @var Image
 	 */
 	protected $instance;
@@ -77,13 +77,17 @@ class InterventionImageProvider implements ImageProviderContract {
 	/**
 	 * Set Save Options
 	 *
-	 * @param string $name
+	 * @param string $name might be with or without extension
 	 * @param string $path
 	 * @return ImageProviderContract
 	 */
 	public function setSaveOptions(string $name, string $path) :ImageProviderContract
 	{
-		$this->save_as = $path . $name . '.' . $this->save_extension;
+		if (! preg_match('/^.*\.[\w]{3,4}$/', $name)) {
+			$this->save_as = $path . $name . '.' . $this->save_extension;
+		} else {
+			$this->save_as = $path . $name;
+		}
 		return $this;
 	}
 
@@ -95,7 +99,8 @@ class InterventionImageProvider implements ImageProviderContract {
 	 */
 	public function save($keep_instance = false) :string
 	{
-		return $this->instance->save($this->save_as, $this->save_quality);
+		$this->instance->save($this->save_as, $this->save_quality);
+		return basename($this->save_as);
 	}
 
 	/**
@@ -122,6 +127,6 @@ class InterventionImageProvider implements ImageProviderContract {
 	 * Destroy Image instance
 	 */
 	public function destroy() {
-		$this->instance->destroy();	
+		$this->instance->destroy();
 	}
 }
