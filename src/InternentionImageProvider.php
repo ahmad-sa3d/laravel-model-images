@@ -83,12 +83,25 @@ class InterventionImageProvider implements ImageProviderContract {
 	 */
 	public function setSaveOptions(string $name, string $path) :ImageProviderContract
 	{
+		// Check Path if exists or not
+		$this->createMissingPath($path);
+
+		$this->save_as = $path . $name;
 		if (! preg_match('/^.*\.[\w]{3,4}$/', $name)) {
-			$this->save_as = $path . $name . '.' . $this->save_extension;
-		} else {
-			$this->save_as = $path . $name;
+			$this->save_as .= '.' . $this->save_extension;
 		}
 		return $this;
+	}
+
+	/**
+	 * Check Path and create Missing Directories if necessary
+	 *
+	 * @param $path
+	 */
+	private function createMissingPath($path) {
+		if (! file_exists($path)) {
+			mkdir($path, 0755, true);
+		}
 	}
 
 	/**
