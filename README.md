@@ -254,7 +254,8 @@ defining a default image is the same process as attaching image to the model, th
 by calling the static method `settingDefaultImage()` on the model ex: `User::settingDefaultImage()` <br>
 here we can see in action:
 
-```
+``` php
+
 // ProfilesController.php File
 class ProfilesController
 {		
