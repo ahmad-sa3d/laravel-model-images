@@ -90,9 +90,9 @@ this is very easy just use `$user->getImagePublicLink()` it will get profile pho
 <br>
 by default all images will be stored inside `public` directory in the following directory `images/uploads`
 <br>
-> it uses the convention naming *__get`ImageField`PublicLink()__*
+> this library uses the convention naming *__get`ImageField`PublicLink()__*
 > <br>
-so if we have image field called `profile_photo` the method will be `getProfilePhotoPublicImage()`
+so if we have image field called `profile_photo` the method will be `getProfilePhotoPublicLink()`
 
 ### Customization
 --
