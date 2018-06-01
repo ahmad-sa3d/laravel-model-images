@@ -25,7 +25,7 @@ the default provider is my package (saad/image) but you can switch between them 
 
 
 Basic Usage
---
+---
 
 #### 1- Model Setup
 * assume we have a model like User model has a string field called `image`
@@ -95,7 +95,7 @@ by default all images will be stored inside `public` directory in the following 
 so if we have image field called `profile_photo` the method will be `getProfilePhotoPublicLink()`
 
 ### Customization
---
+---
 
 #### 1- Multiple image sizes:
 
