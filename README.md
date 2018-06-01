@@ -15,7 +15,7 @@
 </p>
 
 ### Dependencies
-this library uses two providers one of intervention/image library and the other saad/image (My Package) for image manipulation 
+this library uses two providers one of [intervention/image](https://github.com/Intervention/image) library and the other [saad/image](https://github.com/ahmad-sa3d/saad-image) (My Package) for image manipulation 
 the default provider is my package (saad/image) but you can switch between them as you wish and also you can create your own driver if you wish and use it.
 
 ### Install
