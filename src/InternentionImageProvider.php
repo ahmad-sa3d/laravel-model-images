@@ -58,6 +58,26 @@ class InterventionImageProvider implements ImageProviderContract {
 	}
 
 	/**
+	 * Backup Image Resource
+	 *
+	 * @return void
+	 */
+	public function backup() :void
+	{
+		$this->instance->backup();
+	}
+
+	/**
+	 * Rest Image Resource from a backup
+	 *
+	 * @return void
+	 */
+	public function reset() :void
+	{
+		$this->instance->reset();
+	}
+
+	/**
 	 * Set Output Format Options
 	 *
 	 * @param string $extension

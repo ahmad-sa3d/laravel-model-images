@@ -21,6 +21,20 @@ interface ImageProviderContract {
 	public function create($file_path, $extension = null) :ImageProviderContract;
 
 	/**
+	 * Backup Image Resource
+	 *
+	 * @return void
+	 */
+	public function backup() :void;
+
+	/**
+	 * Reset Image Resource from a backup
+	 *
+	 * @return void
+	 */
+	public function reset() :void;
+
+	/**
 	 * Set Output Format Options
 	 *
 	 * @param string $extension save base extension

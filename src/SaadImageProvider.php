@@ -16,7 +16,7 @@ class SaadImageProvider implements ImageProviderContract {
 
 	/**
 	 * Image Instance
-	 * 
+	 *
 	 * @var Image
 	 */
 	protected $instance;
@@ -33,6 +33,26 @@ class SaadImageProvider implements ImageProviderContract {
 	{
 		$this->instance = new Image($file_path, $extension);
 		return $this;
+	}
+
+	/**
+	 * Backup Image Resource
+	 *
+	 * @return void
+	 */
+	public function backup() :void
+	{
+		$this->instance->backup();
+	}
+
+	/**
+	 * Rest Image Resource from a backup
+	 *
+	 * @return void
+	 */
+	public function reset() :void
+	{
+		$this->instance->reset();
 	}
 
 	/**
@@ -91,6 +111,6 @@ class SaadImageProvider implements ImageProviderContract {
 	 * Destroy Image instance
 	 */
 	public function destroy() {
-		$this->instance->destroy();	
+		$this->instance->destroy();
 	}
 }

@@ -110,6 +110,10 @@ class ImageSaver {
 		$file = $this->is_uploaded ? $this->image->getPathname() : $this->image;
 
 		$this->image_provider->create($file, $this->extension);
+
+		// Backup Original Resource
+		$this->image_provider->backup();
+
 		$this->image_provider->setOutputFormat(
 			$this->model->imageSaveExtension(),
 			$this->model->imageSaveQuality(),
@@ -132,6 +136,9 @@ class ImageSaver {
 				->save(true);
 
 			foreach ($sizes as $size) {
+				// Restore Original Resource from Backup, so we have the full resource with original resolution and quality
+				$this->image_provider->reset();
+
 				$size = $this->getSize($size);
 				$this->image_provider->createThumbnail($size['w'], $size['h'], true)
 					->setSaveOptions(join('x', $size) . '_' . $save_name, $path . 'thumb' . DIRECTORY_SEPARATOR)
