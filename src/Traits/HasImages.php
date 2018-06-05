@@ -20,14 +20,14 @@ trait HasImages {
 
 	/**
 	 * Cached Links
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $cached_links = [];
 
 	/**
 	 * Is Setting Default Images
-	 * 
+	 *
 	 * @var bool
 	 */
 	protected static $is_saving_default_image;
@@ -87,7 +87,7 @@ trait HasImages {
 
 	/**
 	 * Check if setting default image
-	 * 
+	 *
 	 * @return  boolean
 	 */
 	public function isSettingDefaultImage() :bool
@@ -120,7 +120,7 @@ trait HasImages {
 
 	/**
 	 * Get Save Extension
-	 * 
+	 *
 	 * @return string
 	 */
 	public function imageSaveExtension() :string
@@ -130,7 +130,7 @@ trait HasImages {
 
 	/**
 	 * Get Save Quality
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function imageSaveQuality() :int
@@ -140,7 +140,7 @@ trait HasImages {
 
 	/**
 	 * Get Save Filter
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function imagePNGFilter() :int
@@ -157,7 +157,7 @@ trait HasImages {
 	public function getSaveName($field) :string
 	{
 		if ($this->isSettingDefaultImage()) {
-			return 'default';
+			return $this->defaultImageName($field);
 		}
 
 		$base_name_method = Str::camel($field) . 'ImageSaveName';
@@ -168,6 +168,18 @@ trait HasImages {
 		}
 
 		return $name;
+	}
+
+	/**
+	 * Get Field Default Image Name
+	 *
+	 * @param $field
+	 * @return string
+	 */
+	private function defaultImageName($field) :string
+	{
+		$class = Str::snake(class_basename($this));
+		return "default_{$class}_{$field}";
 	}
 
 	/**
@@ -243,19 +255,20 @@ trait HasImages {
 	 * @return string
 	 */
 	public function getPublicLink($field, $prefix = null)
-    {
-        $prefix = $prefix ? 'thumb/' . $prefix . '_' : null;
-        $c_key = $prefix . $field;
+	{
+		$prefix = $prefix ? 'thumb/' . $prefix . '_' : null;
+		$c_key = $prefix . $field;
 
-        if (isset($this->cached_links[$c_key])) {
-            return $this->cached_links[$c_key];
-        }
-        $path = $this->getSavePath($field);
-        $link = $path . $prefix . $this->{$field};
-        if (!is_file(public_path($link))) {
-            $link = $path . $prefix . 'default.' . $this->imageSaveExtension();
-        }
+		if (isset($this->cached_links[$c_key])) {
+			return $this->cached_links[$c_key];
+		}
 
-        return $this->cached_links[$c_key] = $link;
-    }
+		$path = $this->getSavePath($field);
+		$link = $path . $prefix . $this->{$field};
+		if (!is_file(public_path($link))) {
+			$link = $path . $prefix . $this->defaultImageName($field) . '.' . $this->imageSaveExtension();
+		}
+
+		return $this->cached_links[$c_key] = $link;
+	}
 }
